@@ -1,0 +1,27 @@
+---
+
+---
+
+<script>
+    const TRANSLATIONS: Record<string, { fr: string; en: string }> = {
+        "DEFAULT_TEXT": { "fr": "Texte par défaut", "en": "Default text" }
+    }
+
+    let language: "fr" | "en" = "fr";
+    function UpdateLanguage() {
+        let params = new URLSearchParams(window.location.search);
+        if (params.has("lang")) {
+            let newLang = params.get("lang");
+            if (newLang == "fr" || newLang == "en")
+                language = newLang ?? "fr";
+        }
+    }
+        
+    UpdateLanguage();
+    document.querySelectorAll<HTMLElement>(".translate").forEach(elem => {
+        elem.dataset.translation = elem.innerHTML;
+        if (TRANSLATIONS[elem.dataset.translation]) {
+            elem.innerHTML = TRANSLATIONS[elem.dataset.translation][language];
+        }
+    });
+</script>

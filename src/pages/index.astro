@@ -1,5 +1,5 @@
 ---
-
+import Translation from "../components/Translation.astro";
 ---
 
 <html lang="en">
@@ -13,8 +13,11 @@
 	</head>
 	<body>
 		<h1>Astro</h1>
-		<div id="affichage">DEFAULT_TEXT</div>
+		<div class="translate" id="affichage">DEFAULT_TEXT</div>
 	</body>
+	<footer>
+		<Translation />
+	</footer>
 </html>
 
 <script>
@@ -26,7 +29,7 @@
 		return data;
 	}
 
-	async function GetDataFromStation(stationIndex: number) {
+	async function GetDatasFromStation(stationIndex: number) {
 		return GetDatas(1, stationIndex).then(datas => {
 			console.log(datas);
 			if (datas.total_count >= 1) return datas.results[0];
@@ -38,7 +41,7 @@
 		const AFFICHAGE = document.getElementById("affichage");
 		if (!AFFICHAGE) return;
 
-		GetDataFromStation(9999).then(data => {
+		GetDatasFromStation(9999).then(data => {
 			if (!data) return;
 			AFFICHAGE.innerHTML = data.name;
 		})
