@@ -12,8 +12,11 @@
         let params = new URLSearchParams(window.location.search);
         if (params.has("lang")) {
             let newLang = params.get("lang");
-            if (newLang == "fr" || newLang == "en")
-                language = newLang ?? "fr";
+            if (newLang === "fr" || newLang === "en") {
+                let html = document.querySelector("html");
+                if (html) html.lang = newLang;
+                language = newLang;
+            }
         }
     }
         
