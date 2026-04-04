@@ -20,21 +20,17 @@ import Translation from "../components/Translation.astro";
 		<SectionsContainer>
 			<Section>
 				<h1 class="translate">DISTRICTS</h1>
-				<Arrondissement>1</Arrondissement><Arrondissement>2</Arrondissement><Arrondissement>3</Arrondissement><Arrondissement>4</Arrondissement><Arrondissement>5</Arrondissement>
-				<Arrondissement>6</Arrondissement><Arrondissement>7</Arrondissement><Arrondissement>8</Arrondissement><Arrondissement>9</Arrondissement><Arrondissement>10</Arrondissement>
-				<Arrondissement>11</Arrondissement><Arrondissement>12</Arrondissement><Arrondissement>13</Arrondissement><Arrondissement>14</Arrondissement><Arrondissement>15</Arrondissement>
-				<Arrondissement>16</Arrondissement><Arrondissement>17</Arrondissement><Arrondissement>18</Arrondissement><Arrondissement>19</Arrondissement><Arrondissement>20</Arrondissement>
+				<Arrondissement dept="1" /><Arrondissement dept="2" /><Arrondissement dept="3" /><Arrondissement dept="4" /><Arrondissement dept="5" />
+				<Arrondissement dept="6" /><Arrondissement dept="7" /><Arrondissement dept="8" /><Arrondissement dept="9" /><Arrondissement dept="10" />
+				<Arrondissement dept="11" /><Arrondissement dept="12" /><Arrondissement dept="13" /><Arrondissement dept="14" /><Arrondissement dept="15" />
+				<Arrondissement dept="16" /><Arrondissement dept="17" /><Arrondissement dept="18" /><Arrondissement dept="19" /><Arrondissement dept="20" />
 			</Section>
 			<Section>
 				<h1 class="translate">DEPARTMENTS</h1>
-				<Arrondissement>92</Arrondissement>
-				<Arrondissement>93</Arrondissement>
-				<Arrondissement>94</Arrondissement>
-				<Arrondissement>95</Arrondissement>
-			</Section>
-			<Section>
-				<h1 class="translate">OTHERS</h1>
-				<Arrondissement>Mobile</Arrondissement>
+				<Arrondissement dept="92" />
+				<Arrondissement dept="93" />
+				<Arrondissement dept="94" />
+				<Arrondissement dept="95" />
 			</Section>
 		</SectionsContainer>
 		<SectionsContainer>
@@ -95,16 +91,32 @@ import Translation from "../components/Translation.astro";
 	}
 	
 	function Ready() {
-		AfficheDatas();
+		document.querySelectorAll(".arrondissement").forEach(dept => {
+			let input = dept.querySelector("input");
+			if (input) input.onclick = () => AfficheDatas(GetStationsByDepartment(dept.id));
+		})
+
+		AfficheDatas(datas.slice(0, 5));
 	}
 
-	async function AfficheDatas() {
+	async function AfficheDatas(stations: Array<any>) {
 		const AFFICHAGE = document.getElementById("affichage");
 		if (!AFFICHAGE) return;
+		
+		AFFICHAGE.innerHTML = "";
+		for (let i = 0; i < stations.length; i++) {
+			let station = stations[i];
+			AFFICHAGE.innerHTML += `${station.stationcode} ${station.name} ${station.is_renting} ${station.is_installed}<br>`;
+		}
+	}
 
-		GetDatasFromOneStation(1).then(data => {
-			if (!data) return;
-			AFFICHAGE.innerHTML = data.name;
-		})
+	function GetDepartment(codeInsee: string) {
+		let dept = codeInsee.slice(0, 2);
+
+		return dept;
+	}
+	
+	function GetStationsByDepartment(department: string) {
+		return datas.filter(station => GetDepartment(station.code_insee_commune) == department);
 	}
 </script>

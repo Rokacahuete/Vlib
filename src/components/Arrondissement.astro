@@ -1,10 +1,10 @@
 ---
-
+const { dept } = Astro.props;
 ---
 
-<div class="arrondissement">
+<div class="arrondissement" id={dept}>
     <input type="button">
-    <slot />
+    { dept }
 </div>
 
 <style>
