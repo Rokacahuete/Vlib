@@ -1,0 +1,20 @@
+---
+const { style, class: classlist } = Astro.props;
+---
+
+<div class=`section glass centered ${classlist ?? ""}` style={style ?? ""}>
+	<slot />
+</div>
+
+<style>
+    .section {
+		padding-top: 20px;
+        flex: 1 1 300px;
+		height: 100%;
+		text-align: left;
+        background: gray;
+    	border: 2px solid black;
+  		box-sizing: border-box;
+    	border-radius: 30px;
+    }
+</style>

@@ -1,4 +1,7 @@
 ---
+import Arrondissement from "../components/Arrondissement.astro";
+import Section from "../components/Section.astro";
+import SectionsContainer from "../components/SectionsContainer.astro";
 import Translation from "../components/Translation.astro";
 ---
 
@@ -13,7 +16,35 @@ import Translation from "../components/Translation.astro";
 	</head>
 	<body>
 		<h1>Astro</h1>
-		<div class="translate" id="affichage">DEFAULT_TEXT</div>
+
+		<SectionsContainer>
+			<Section>
+				<h1 class="translate">DISTRICTS</h1>
+				<Arrondissement>1</Arrondissement><Arrondissement>2</Arrondissement><Arrondissement>3</Arrondissement><Arrondissement>4</Arrondissement><Arrondissement>5</Arrondissement>
+				<Arrondissement>6</Arrondissement><Arrondissement>7</Arrondissement><Arrondissement>8</Arrondissement><Arrondissement>9</Arrondissement><Arrondissement>10</Arrondissement>
+				<Arrondissement>11</Arrondissement><Arrondissement>12</Arrondissement><Arrondissement>13</Arrondissement><Arrondissement>14</Arrondissement><Arrondissement>15</Arrondissement>
+				<Arrondissement>16</Arrondissement><Arrondissement>17</Arrondissement><Arrondissement>18</Arrondissement><Arrondissement>19</Arrondissement><Arrondissement>20</Arrondissement>
+			</Section>
+			<Section>
+				<h1 class="translate">DEPARTMENTS</h1>
+				<Arrondissement>92</Arrondissement>
+				<Arrondissement>93</Arrondissement>
+				<Arrondissement>94</Arrondissement>
+				<Arrondissement>95</Arrondissement>
+			</Section>
+			<Section>
+				<h1 class="translate">OTHERS</h1>
+				<Arrondissement>Mobile</Arrondissement>
+			</Section>
+		</SectionsContainer>
+		<SectionsContainer>
+			<Section>
+				<div class="translate" id="affichage">DEFAULT_TEXT</div>
+			</Section>
+		</SectionsContainer>
+		<SectionsContainer>
+			<div id="arrondissement-stations"></div>
+		</SectionsContainer>
 	</body>
 	<footer>
 		<Translation />
@@ -48,31 +79,32 @@ import Translation from "../components/Translation.astro";
 
 			datas = allResults;
 			console.log(`Vélib : ${datas.length} stations chargées`);
+			console.log(datas);
 		} catch (error) {
 			console.error("Erreur lors du chargement des données Vélib :", error);
 		}
 	}
 
-	UpdateAllStations();
+	UpdateAllStations().then(() => Ready());
 	setInterval(UpdateAllStations, 30_000);
 
-	async function GetDatasFromStation(stationIndex: number) {
-		return GetDatas(1, stationIndex).then(datas => {
-			console.log(datas);
-			if (datas.total_count >= 1) return datas.results[0];
-			else return null;
-		});
+	async function GetDatasFromOneStation(stationIndex: number) {
+		if (0 > stationIndex || stationIndex >= datas.length) return null;
+
+		return datas[stationIndex];
+	}
+	
+	function Ready() {
+		AfficheDatas();
 	}
 
 	async function AfficheDatas() {
 		const AFFICHAGE = document.getElementById("affichage");
 		if (!AFFICHAGE) return;
 
-		GetDatasFromStation(9999).then(data => {
+		GetDatasFromOneStation(1).then(data => {
 			if (!data) return;
 			AFFICHAGE.innerHTML = data.name;
 		})
 	}
-
-	AfficheDatas()
 </script>

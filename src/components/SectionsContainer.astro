@@ -1,0 +1,23 @@
+---
+
+---
+
+<div class="sections-container centered">
+    <slot/>
+</div>
+
+<style>
+    .sections-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 10px;
+        width: 90%;
+        margin: 10px auto;
+    }
+
+    @media (max-width: 600px) {
+        .sections-container {
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        }
+    }
+</style>
