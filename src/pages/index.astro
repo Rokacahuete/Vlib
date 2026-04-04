@@ -110,13 +110,15 @@ import Translation from "../components/Translation.astro";
 		}
 	}
 
-	function GetDepartment(codeInsee: string) {
-		let dept = codeInsee.slice(0, 2);
+	function GetDepartment(station: any) {
+		let dept;
+		if (station.code_insee_commune == "75056") dept = station.stationcode.length === 5 ? station.stationcode.slice(0, 2) : station.stationcode.slice(0, 1);
+		else dept = station.code_insee_commune.slice(0, 2);
 
 		return dept;
 	}
 	
 	function GetStationsByDepartment(department: string) {
-		return datas.filter(station => GetDepartment(station.code_insee_commune) == department);
+		return datas.filter(station => GetDepartment(station) == department);
 	}
 </script>
