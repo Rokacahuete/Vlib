@@ -35,11 +35,13 @@ import Translation from "../components/Translation.astro";
 		</SectionsContainer>
 		<SectionsContainer>
 			<Section>
-				<div class="translate" id="affichage">DEFAULT_TEXT</div>
+				<div class="translate" id="current-station">DEFAULT_TEXT</div>
 			</Section>
 		</SectionsContainer>
 		<SectionsContainer>
-			<div id="arrondissement-stations"></div>
+			<Section>
+				<div id="arrondissement-stations"></div>
+			</Section>
 		</SectionsContainer>
 	</body>
 	<footer>
@@ -93,20 +95,41 @@ import Translation from "../components/Translation.astro";
 	function Ready() {
 		document.querySelectorAll(".arrondissement").forEach(dept => {
 			let input = dept.querySelector("input");
-			if (input) input.onclick = () => AfficheDatas(GetStationsByDepartment(dept.id));
+			if (input) input.onclick = () => AfficheDatasInDepartmentSection(GetStationsByDepartment(dept.id));
 		})
 
-		AfficheDatas(datas.slice(0, 5));
+		AfficheDatasInDepartmentSection(datas.slice(0, 5));
 	}
 
-	async function AfficheDatas(stations: Array<any>) {
-		const AFFICHAGE = document.getElementById("affichage");
-		if (!AFFICHAGE) return;
+	function AfficheDatasOfOneStation(station: any) {
+		const CURRENT_STATION = document.getElementById("current-station");
+		if (!CURRENT_STATION) return;
+
+		CURRENT_STATION.innerHTML = "";
+		CURRENT_STATION.innerHTML = `
+		code : ${station.stationcode}<br>
+		nom : ${station.name}<br>
+		arrondissement : ${GetDepartment(station)}<br>
+		ville : ${station.nom_arrondissement_communes}<br>
+		ouvert : ${station.is_installed}<br>
+		capacité : ${station.capacity}<br>
+		vélos disponibles : ${station.numbikesavailable}<br>
+		attaches disponibles : ${station.numdocksavailable}<br>
+		carte bleue : ${station.is_renting}<br>
+		`
+	}
+
+	function AfficheDatasInDepartmentSection(stations: Array<any>) {
+		const ARRONDISSEMENT_STATIONS = document.getElementById("arrondissement-stations");
+		if (!ARRONDISSEMENT_STATIONS) return;
 		
-		AFFICHAGE.innerHTML = "";
+		ARRONDISSEMENT_STATIONS.innerHTML = "";
 		for (let i = 0; i < stations.length; i++) {
 			let station = stations[i];
-			AFFICHAGE.innerHTML += `${station.stationcode} ${station.name} ${station.is_renting} ${station.is_installed}<br>`;
+			let elem = document.createElement("div");
+			elem.innerHTML = `${station.stationcode} ${station.name} ${station.is_renting} ${station.is_installed}<br>`;
+			elem.onclick = () => AfficheDatasOfOneStation(station);
+			ARRONDISSEMENT_STATIONS.appendChild(elem);
 		}
 	}
 
