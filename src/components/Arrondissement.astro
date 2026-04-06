@@ -2,11 +2,17 @@
 const { dept } = Astro.props;
 ---
 
-<div class="arrondissement" id={dept}>
-    <input type="button">
+<div class="arrondissement centered" id={dept}>
     { dept }
 </div>
 
 <style>
-    .arrondissement {}
+    .arrondissement {
+        border: 2px solid var(--border-color);
+        border-radius: 10px;
+
+        justify-content: center;
+        width: 50px;
+        height: 50px;
+    }
 </style>

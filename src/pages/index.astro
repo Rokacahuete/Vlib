@@ -1,53 +1,45 @@
 ---
+import Layout from "../Layout.astro";
 import Arrondissement from "../components/Arrondissement.astro";
 import Section from "../components/Section.astro";
 import SectionsContainer from "../components/SectionsContainer.astro";
-import Translation from "../components/Translation.astro";
+import Title from "../components/Title.astro";
 ---
 
-<html lang="fr">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
+<Layout>
+	<Title>TITLE_VELIB</Title>
 
-		<SectionsContainer>
-			<Section>
-				<h1 class="translate">DISTRICTS</h1>
+	<SectionsContainer>
+		<Section>
+			<h1 class="translate">DISTRICTS</h1>
+			<div class="container">
 				<Arrondissement dept="1" /><Arrondissement dept="2" /><Arrondissement dept="3" /><Arrondissement dept="4" /><Arrondissement dept="5" />
 				<Arrondissement dept="6" /><Arrondissement dept="7" /><Arrondissement dept="8" /><Arrondissement dept="9" /><Arrondissement dept="10" />
 				<Arrondissement dept="11" /><Arrondissement dept="12" /><Arrondissement dept="13" /><Arrondissement dept="14" /><Arrondissement dept="15" />
 				<Arrondissement dept="16" /><Arrondissement dept="17" /><Arrondissement dept="18" /><Arrondissement dept="19" /><Arrondissement dept="20" />
+			</div>
 			</Section>
-			<Section>
-				<h1 class="translate">DEPARTMENTS</h1>
+		<Section>
+			<h1 class="translate">DEPARTMENTS</h1>
+			<div class="container">
 				<Arrondissement dept="92" />
 				<Arrondissement dept="93" />
 				<Arrondissement dept="94" />
 				<Arrondissement dept="95" />
-			</Section>
-		</SectionsContainer>
-		<SectionsContainer>
-			<Section>
-				<div class="translate" id="current-station">DEFAULT_TEXT</div>
-			</Section>
-		</SectionsContainer>
-		<SectionsContainer>
-			<Section>
-				<div id="arrondissement-stations"></div>
-			</Section>
-		</SectionsContainer>
-	</body>
-	<footer>
-		<Translation />
-	</footer>
-</html>
+			</div>
+		</Section>
+	</SectionsContainer>
+	<SectionsContainer>
+		<Section>
+			<div class="translate" id="current-station">DEFAULT_TEXT</div>
+		</Section>
+	</SectionsContainer>
+	<SectionsContainer>
+		<Section>
+			<div id="arrondissement-stations"></div>
+		</Section>
+	</SectionsContainer>
+</Layout>
 
 <script>
 	const API_URL = "https://opendata.paris.fr/api/explore/v2.1/catalog/datasets/velib-disponibilite-en-temps-reel/records";
@@ -93,9 +85,8 @@ import Translation from "../components/Translation.astro";
 	}
 	
 	function Ready() {
-		document.querySelectorAll(".arrondissement").forEach(dept => {
-			let input = dept.querySelector("input");
-			if (input) input.onclick = () => AfficheDatasInDepartmentSection(GetStationsByDepartment(dept.id));
+		document.querySelectorAll<HTMLElement>(".arrondissement").forEach(dept => {
+			dept.onclick = () => AfficheDatasInDepartmentSection(GetStationsByDepartment(dept.id));
 		})
 
 		AfficheDatasInDepartmentSection(datas.slice(0, 5));
