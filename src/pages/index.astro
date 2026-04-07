@@ -31,7 +31,7 @@ import Title from "../components/Title.astro";
 	</SectionsContainer>
 	<SectionsContainer>
 		<Section>
-			<div class="translate" id="current-station">DEFAULT_TEXT</div>
+			<div class="translate" id="current-station">SELECT_STATION</div>
 		</Section>
 	</SectionsContainer>
 	<SectionsContainer>
@@ -92,11 +92,27 @@ import Title from "../components/Title.astro";
 		AfficheDatasInDepartmentSection(datas.slice(0, 5));
 	}
 
+	function CreateElem(text: string) {
+		let elem = document.createElement("div");
+		elem.innerHTML = text;
+		return elem;
+	}
+
 	function AfficheDatasOfOneStation(station: any) {
 		const CURRENT_STATION = document.getElementById("current-station");
 		if (!CURRENT_STATION) return;
 
 		CURRENT_STATION.innerHTML = "";
+		CURRENT_STATION.appendChild(CreateElem("CODE"));
+		CURRENT_STATION.appendChild(CreateElem("NAME"));
+		CURRENT_STATION.appendChild(CreateElem("DISTRICT"));
+		CURRENT_STATION.appendChild(CreateElem("CITY"));
+		CURRENT_STATION.appendChild(CreateElem("IS_OPEN"));
+		CURRENT_STATION.appendChild(CreateElem("CAPACITY"));
+		CURRENT_STATION.appendChild(CreateElem("BIKE_DISPONIBILITY"));
+		CURRENT_STATION.appendChild(CreateElem("A"));
+		CURRENT_STATION.appendChild(CreateElem("IS_CREDIT_CARD_DISPONIBLE"));
+		
 		CURRENT_STATION.innerHTML = `
 		code : ${station.stationcode}<br>
 		nom : ${station.name}<br>
